@@ -2,49 +2,37 @@ name: Kivy APK Builder
 
 on:
   push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-
-    env:
-      ANDROIDSDK: /home/runner/.buildozer/android/platform/android-sdk
-      ANDROIDNDK: /home/runner/.buildozer/android/platform/android-ndk
-      ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
-      PATH: /home/runner/.local/bin:/usr/bin:/bin
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Show directory (debug)
-        run: |
-          echo "Files in repo:"
-          ls -la
-
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y \
-            python3-pip \
-            build-essential \
-            zip unzip \
-            openjdk-17-jdk \
-            git
+          sudo apt install -y python3-pip openjdk-17-jdk unzip git
 
-      - name: Install Buildozer
+      - name: Install Buildozer & Cython
         run: |
           pip install --upgrade pip
-          pip install buildozer cython==0.29.33
+          pip install cython
+          pip install buildozer
 
-      - name: Force Verbose Log
+      - name: Show directory (debug)
+        run: ls -R .
+
+      - name: Build APK (DEBUG)
         run: |
           set -x
-          buildozer android debug || true
+          buildozer android debug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: apk
           path: bin/*.apk
