@@ -9,13 +9,14 @@ source.include_exts = py,png,jpg,kv,xlsx
 
 version = 1.0
 
-requirements = python3,kivy,openpyxl
+requirements = python3,kivy==2.2.1,openpyxl
 
 orientation = portrait
 fullscreen = 0
 
 android.api = 30
 android.minapi = 21
+android.ndk = 25b
 android.arch = armeabi-v7a
 
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
@@ -24,4 +25,3 @@ android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
 log_level = 2
 warn_on_root = 1
-
