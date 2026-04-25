@@ -1,0 +1,41 @@
+name: Kivy APK Builder
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y pkg-config zip unzip libncurses5 build-essential \
+          libncursesw5 libtinfo5 python3-pip python3-setuptools python3-wheel \
+          openjdk-17-jdk zlib1g-dev libffi-dev libssl-dev autoconf automake \
+          libtool cmake git
+
+    - name: Install Buildozer
+      run: |
+        pip install --upgrade pip
+        pip install cython buildozer
+
+    - name: Fix permissions
+      run: |
+        chmod +x ./buildozer.spec || true
+        chmod -R 777 .
+
+    - name: Build APK
+      run: |
+        buildozer android debug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app
+        path: bin/*.apk
