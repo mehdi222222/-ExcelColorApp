@@ -1,23 +1,20 @@
 [app]
 
 title = Excel Color Reader
-package.name = excelcolor
-package.domain = org.test
+package.name = excelcolorreader
+package.domain = org.example
 
 source.dir = .
-source.include_exts = py,xlsx
+source.include_exts = py,xlsx,xlsm
 
 version = 1.0
 
 requirements = python3,kivy,openpyxl
-
 orientation = portrait
-
 fullscreen = 0
 
+android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
 [buildozer]
-
 log_level = 2
-
 warn_on_root = 1
